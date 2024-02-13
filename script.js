@@ -1,47 +1,89 @@
-// Retorne no console todas as imagens do site
-const minhasImagens = document.querySelectorAll("img");
+function initTabNav() {
+    const tabMenu = document.querySelectorAll(".js-tabmenu li");
+    const tabContent = document.querySelectorAll(".js-tabcontent section");
 
-console.log(minhasImagens);
+    if (tabMenu.length && tabContent.length) {
+        tabContent[0].classList.add("ativo");
 
-// Retorne no console apenas as imagens que começaram com a palavra imagem
+        function activeTab(index) {
+            tabContent.forEach((section) => {
+                section.classList.remove("ativo");
+            });
+            tabContent[index].classList.add("ativo");
+        }
 
-const palavraImagem = document.querySelectorAll('img[src^="img/imagem"]');
+        tabMenu.forEach((itemMenu, index) => {
+            itemMenu.addEventListener("click", () => {
+                activeTab(index);
+            });
+        });
+    }
+}
+initTabNav();
 
-console.log(palavraImagem);
+function initAccordion() {
+    const accordionList = document.querySelectorAll(".js-accordion dt");
+    const activeClass = "ativo";
 
-// Selecione todos os links internos (onde o href começa com #)
-const links = document.querySelectorAll('[href^="#"]');
+    if (accordionList.length) {
+        accordionList[0].classList.add(activeClass);
+        accordionList[0].nextElementSibling.classList.add(activeClass);
 
-console.log(links);
+        function activeAccordion() {
+            this.classList.toggle(activeClass);
+            this.nextElementSibling.classList.toggle(activeClass);
+        }
 
-// Selecione o primeiro h2 dentro de .animais-descricao
-const h2animais = document.querySelector(".animais-descricao h2");
-console.log(h2animais);
+        accordionList.forEach((item) => {
+            item.addEventListener("click", activeAccordion);
+        });
+    }
+}
+initAccordion();
 
-// Selecione o último p do site
-const ultimoP = document.querySelectorAll("p");
+function initScrollSuave() {
+    const linksInternos = document.querySelectorAll('.js-menu a[href^="#"]');
 
-console.log(ultimoP[ultimoP.length - 1]);
+    function scrollToSection(event) {
+        event.preventDefault();
+        const href = event.currentTarget.getAttribute("href");
+        const section = document.querySelector(href);
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
 
-//----------------------------------------------
-//Exercicio 002
+        // forma alternativa
+        // const topo = section.offsetTop;
+        // window.scrollTo({
+        //   top: topo,
+        //   behavior: 'smooth',
+        // });
+    }
 
-// Mostre no console cada parágrado do site
-const paragrafosTodos = document.querySelectorAll("p");
-console.log(paragrafosTodos);
+    linksInternos.forEach((link) => {
+        link.addEventListener("click", scrollToSection);
+    });
+}
+initScrollSuave();
 
-// Mostre o texto dos parágrafos no console
+function initAnimacaoScroll() {
+    const sections = document.querySelectorAll(".js-scroll");
+    if (sections.length) {
+        const windowMetade = window.innerHeight * 0.6;
 
-// Como corrigir os erros abaixo:
-const imgs = document.querySelectorAll("img");
+        function animaScroll() {
+            sections.forEach((section) => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const isSectionVisible = sectionTop - windowMetade < 0;
+                if (isSectionVisible) section.classList.add("ativo");
+                else section.classList.remove("ativo");
+            });
+        }
 
-imgs.forEach(item, (index) => {
-    console.log(item, index);
-});
+        animaScroll();
 
-let i = 0;
-imgs.forEach(() => {
-    console.log(i++);
-});
-
-imgs.forEach(() => i++);
+        window.addEventListener("scroll", animaScroll);
+    }
+}
+initAnimacaoScroll();
