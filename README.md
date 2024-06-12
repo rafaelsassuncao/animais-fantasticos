@@ -1,4 +1,4 @@
-# animais-fantasticos
+# Animais-Fantasticos
  Exercicio do curso de Javascript - Curso da Origamid
 
 
